@@ -9,6 +9,8 @@ class Order(models.Model):
     car_color = models.ForeignKey('CarColor', blank=False, on_delete=models.PROTECT, verbose_name='Цвет авто')
     count = models.IntegerField(blank=False, verbose_name='Количество авто')
 
+    def __str__(self):
+        return str(self.order_date)
 
 
     class Meta:
