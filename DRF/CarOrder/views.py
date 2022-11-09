@@ -8,10 +8,6 @@ from .models import Order
 from .serializers import OrderSerializer
 
 
-# class OrderAPIView(generics.ListAPIView):
-#     queryset = Order.objects.all()
-#     serializer_class = OrderSerializer
-
 class OrderAPIView(APIView):
     def get(self, request):
         o = Order.objects.all()
@@ -19,7 +15,8 @@ class OrderAPIView(APIView):
 
     def post(self, request):
         serializer = OrderSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors)
 
-        return Response({'order': serializer.data})

@@ -10,7 +10,7 @@ class Order(models.Model):
     count = models.IntegerField(blank=False, verbose_name='Количество авто')
 
     def __str__(self):
-        return str(self.order_date)
+        return f"{str(self.order_date)} - {self.car_model}, кол-во: {self.count}"
 
 
     class Meta:
