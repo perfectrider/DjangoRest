@@ -17,3 +17,18 @@ class OrderAPIView(APIView):
             return Response(serializer.data)
         return Response(serializer.errors)
 
+    def put(self, request, *args, **kwargs):
+        pk = kwargs.get('pk', None)
+        if not pk:
+            return Response({'error': 'Method PUT not allowed'})
+
+        try:
+            instance = Order.objects.get(pk=pk)
+        except:
+            return Response({'error': 'Object does not exist'})
+
+        serializer = OrderSerializer(data=request.data, instance=instance)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors)
