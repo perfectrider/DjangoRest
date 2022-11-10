@@ -11,6 +11,18 @@ class OrderAPIList(generics.ListCreateAPIView):
     serializer_class = OrderSerializer
 
 
+class OrderAPIUpdate(generics.UpdateAPIView):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
+
+
+class OrderAPIDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
+
+
+
+
 # Класс для использование с serializes.Serializers:
 
 # class OrderAPIView(APIView):
