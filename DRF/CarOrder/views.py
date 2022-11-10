@@ -1,4 +1,4 @@
-from rest_framework import generics
+from rest_framework import generics, viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -6,23 +6,31 @@ from .models import Order
 from .serializers import OrderSerializer
 
 
-class OrderAPIList(generics.ListCreateAPIView):
+class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
 
 
-class OrderAPIUpdate(generics.UpdateAPIView):
-    queryset = Order.objects.all()
-    serializer_class = OrderSerializer
+# ----------------------------------------------------
+#  Классы Generics (При работе с большими проектами их использовать неоптимально,
+# т.к. будет много повторяющегося кода в каждом из классов)
+
+# class OrderAPIList(generics.ListCreateAPIView):
+#     queryset = Order.objects.all()
+#     serializer_class = OrderSerializer
+#
+#
+# class OrderAPIUpdate(generics.UpdateAPIView):
+#     queryset = Order.objects.all()
+#     serializer_class = OrderSerializer
+#
+#
+# class OrderAPIDetailView(generics.RetrieveUpdateDestroyAPIView):
+#     queryset = Order.objects.all()
+#     serializer_class = OrderSerializer
 
 
-class OrderAPIDetailView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Order.objects.all()
-    serializer_class = OrderSerializer
-
-
-
-
+# ---------------------------------------------------
 # Класс для использование с serializes.Serializers:
 
 # class OrderAPIView(APIView):

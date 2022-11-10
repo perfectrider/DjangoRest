@@ -14,12 +14,23 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 from CarOrder.views import *
+from rest_framework import routers
+
+router = routers.SimpleRouter()
+router.register(r'order', OrderViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/v1/orderlist/', OrderAPIList.as_view()),
-    path('api/v1/orderlist/<int:pk>/', OrderAPIUpdate.as_view()),
-    path('api/v1/orderdetail/<int:pk>/', OrderAPIDetailView.as_view())
+    path('api/v1/', include(router.urls)),  # http://127.0.0.1:8000/api/v1/order/
+
+    # path('api/v1/orderlist/', OrderViewSet.as_view({'get': 'list'})),
+    # path('api/v1/orderlist/<int:pk>', OrderViewSet.as_view({'put': 'update'}))
+    # URL для использования с классом представлений ViewSet, без использования routers
+
+    # path('api/v1/orderlist/', OrderAPIList.as_view()),
+    # path('api/v1/orderlist/<int:pk>/', OrderAPIUpdate.as_view()),
+    # path('api/v1/orderdetail/<int:pk>/', OrderAPIDetailView.as_view())
+#     URL для использования с классами представлений generics
 ]
