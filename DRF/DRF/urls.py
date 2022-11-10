@@ -15,10 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from CarOrder.views import OrderAPIView
+from CarOrder.views import OrderAPIList
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/v1/orderlist/', OrderAPIView.as_view()),
-    path('api/v1/orderlist/<int:pk>/', OrderAPIView.as_view())
+    path('api/v1/orderlist/', OrderAPIList.as_view()),
+    path('api/v1/orderlist/<int:pk>/', OrderAPIList.as_view())
 ]
