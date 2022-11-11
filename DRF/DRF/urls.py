@@ -18,8 +18,8 @@ from django.urls import path, include
 from CarOrder.views import *
 from rest_framework import routers
 
-router = routers.SimpleRouter()
-router.register(r'order', OrderViewSet)
+router = routers.DefaultRouter()
+router.register(r'order', OrderViewSet, basename='order')
 
 urlpatterns = [
     path('admin/', admin.site.urls),

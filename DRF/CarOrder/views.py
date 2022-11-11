@@ -1,14 +1,39 @@
 from rest_framework import generics, viewsets
+from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .models import Order
+from .models import Order, CarColor, CarBrand
 from .serializers import OrderSerializer
 
 
 class OrderViewSet(viewsets.ModelViewSet):
-    queryset = Order.objects.all()
+    # queryset = Order.objects.all()
+    # Можно убрать, если при регистрации роутера указать атрибут 'basename='order'
     serializer_class = OrderSerializer
+
+    def get_queryset(self):
+        pk = self.kwargs.get('pk')
+
+        if not pk:
+            return Order.objects.all()
+
+        return Order.objects.filter(pk=pk)
+
+    @action(methods=['get'], detail=False)
+    # Если detail=True, то будет возвращаться не список записей, а одна
+
+    def by_colors(self, request):
+        # !ВЫВОД заказов по цветам. (атрибуты: цвет, количество)
+        colors = CarColor.objects.all()
+        return Response({'Colors': [c.color for c in colors]})
+
+    @action(methods=['get'], detail=False)
+    def by_brands(self, request):
+        # !ВЫВОД заказов по брендам. (атрибуты: бренд, количество)
+        brands = CarBrand.objects.all()
+        return Response({'Brands': [c.brand for c in brands]})
+
 
 
 # ----------------------------------------------------

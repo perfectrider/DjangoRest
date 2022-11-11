@@ -23,7 +23,10 @@ class CarModel(models.Model):
     '''Класс моделей авто'''
 
     model_of_car = models.CharField(blank=False, max_length=50, verbose_name='Модель авто')
-    brand_of_car = models.ForeignKey('CarBrand', on_delete=models.PROTECT, blank=False, verbose_name='Марка авто')
+    brand_of_car = models.ForeignKey('CarBrand',
+                                     on_delete=models.PROTECT,
+                                     blank=False,
+                                     verbose_name='Марка авто')
 
     def __str__(self):
         return self.model_of_car

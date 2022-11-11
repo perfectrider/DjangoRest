@@ -1,15 +1,32 @@
 from rest_framework import serializers
 from .models import *
+from datetime import date
 
+
+class BrandField(serializers.ModelSerializer):
+
+    class Meta:
+        model = CarModel
+        fields = ('brand_of_car')
 
 class OrderSerializer(serializers.ModelSerializer):
+    order_date = serializers.DateField(default=date.today, label='Дата заказа')
+
+    car_model = serializers.SlugRelatedField(slug_field='model_of_car',
+                                             queryset=CarModel.objects,
+                                             label='Модель авто')
+
+    car_brand = BrandField(many=True,
+                           read_only=True)
+
+    car_color = serializers.SlugRelatedField(slug_field='color',
+                                             queryset=CarColor.objects,
+                                             label='Цвет авто')
 
     class Meta:
         model = Order
-        fields = ('order_date', 'car_model', 'car_color', 'count')
-
-
-
+        fields = ('order_date', 'car_model', 'car_brand', 'car_color', 'count')
+        depth = 1
 
     # Если используется "serializer.Serializer":
 
