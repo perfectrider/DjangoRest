@@ -5,8 +5,17 @@ class Order(models.Model):
     '''Класс заказов'''
 
     order_date = models.DateField(blank=True, null=True, verbose_name='Дата заказа')
-    car_model = models.ForeignKey('CarModel', blank=False, on_delete=models.PROTECT, verbose_name='Модель авто')
-    car_color = models.ForeignKey('CarColor', blank=False, on_delete=models.PROTECT, verbose_name='Цвет авто')
+
+    car_model = models.ForeignKey('CarModel', on_delete=models.PROTECT,
+                                       blank=False,
+                                       verbose_name='Модель авто',
+                                       related_name='models')
+
+    car_color = models.ForeignKey('CarColor', on_delete=models.PROTECT,
+                                       blank=False,
+                                       verbose_name='Цвет авто',
+                                       related_name='colors')
+
     count = models.IntegerField(blank=False, verbose_name='Количество авто')
 
     def __str__(self):
@@ -23,10 +32,12 @@ class CarModel(models.Model):
     '''Класс моделей авто'''
 
     model_of_car = models.CharField(blank=False, max_length=50, verbose_name='Модель авто')
+
     brand_of_car = models.ForeignKey('CarBrand',
                                      on_delete=models.PROTECT,
                                      blank=False,
-                                     verbose_name='Марка авто')
+                                     verbose_name='Марка авто',
+                                     related_name='brands')
 
     def __str__(self):
         return self.model_of_car

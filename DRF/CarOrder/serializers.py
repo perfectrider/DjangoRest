@@ -4,10 +4,13 @@ from datetime import date
 
 
 class BrandField(serializers.ModelSerializer):
+    brand_of_car = serializers.SlugRelatedField(slug_field='brand',
+                                                queryset=CarBrand.objects)
 
     class Meta:
         model = CarModel
-        fields = ('brand_of_car')
+        fields = ['brand_of_car']
+
 
 class OrderSerializer(serializers.ModelSerializer):
     order_date = serializers.DateField(default=date.today, label='Дата заказа')
@@ -16,8 +19,7 @@ class OrderSerializer(serializers.ModelSerializer):
                                              queryset=CarModel.objects,
                                              label='Модель авто')
 
-    car_brand = BrandField(many=True,
-                           read_only=True)
+    brands = BrandField(many=True, read_only=True)
 
     car_color = serializers.SlugRelatedField(slug_field='color',
                                              queryset=CarColor.objects,
@@ -25,8 +27,7 @@ class OrderSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Order
-        fields = ('order_date', 'car_model', 'car_brand', 'car_color', 'count')
-        depth = 1
+        fields = ['order_date', 'car_model', 'brands', 'car_color', 'count']
 
     # Если используется "serializer.Serializer":
 

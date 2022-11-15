@@ -1,16 +1,25 @@
 from rest_framework import generics, viewsets
 from rest_framework.decorators import action
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .models import Order, CarColor, CarBrand
+from .models import *
 from .serializers import OrderSerializer
+
+
+class OrderAPIPagination(PageNumberPagination):
+    page_size = 10
+    page_query_param = 'page_size'
+    # Через "& + page_size + кол-во" в GET запросе можно принудительно отобразить указанное кол-во
+    max_page_size = 100   # но не более этого кол-ва
 
 
 class OrderViewSet(viewsets.ModelViewSet):
     # queryset = Order.objects.all()
     # Можно убрать, если при регистрации роутера указать атрибут 'basename='order'
     serializer_class = OrderSerializer
+    pagination_class = OrderAPIPagination
 
     def get_queryset(self):
         pk = self.kwargs.get('pk')
