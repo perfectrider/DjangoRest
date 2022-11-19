@@ -1,18 +1,21 @@
-from rest_framework import generics, viewsets
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import generics, viewsets, filters
 from rest_framework.decorators import action
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
-from rest_framework.views import APIView
-
-from .models import *
-from .serializers import OrderSerializer
+from .serializers import *
 
 
 class OrderAPIPagination(PageNumberPagination):
     page_size = 10
     page_query_param = 'page_size'
     # Через "& + page_size + кол-во" в GET запросе можно принудительно отобразить указанное кол-во
-    max_page_size = 100   # но не более этого кол-ва
+    max_page_size = 100  # но не более этого кол-ва
+
+
+class BrandAPIList(generics.ListAPIView):
+    queryset = CarModel.objects.all()
+    serializer_class = BrandSerializer
 
 
 class OrderViewSet(viewsets.ModelViewSet):
@@ -20,6 +23,9 @@ class OrderViewSet(viewsets.ModelViewSet):
     # Можно убрать, если при регистрации роутера указать атрибут 'basename='order'
     serializer_class = OrderSerializer
     pagination_class = OrderAPIPagination
+    filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
+    filterset_fields = ['car_model']
+    ordering_fields = ['count']
 
     def get_queryset(self):
         pk = self.kwargs.get('pk')
@@ -32,18 +38,16 @@ class OrderViewSet(viewsets.ModelViewSet):
     @action(methods=['get'], detail=False)
     # Если detail=True, то будет возвращаться не список записей, а одна
 
-    def by_colors(self, request):
+    def all_colors(self, request):
         # !ВЫВОД заказов по цветам. (атрибуты: цвет, количество)
         colors = CarColor.objects.all()
         return Response({'Colors': [c.color for c in colors]})
 
     @action(methods=['get'], detail=False)
-    def by_brands(self, request):
+    def all_brands(self, request):
         # !ВЫВОД заказов по брендам. (атрибуты: бренд, количество)
         brands = CarBrand.objects.all()
         return Response({'Brands': [c.brand for c in brands]})
-
-
 
 # ----------------------------------------------------
 #  Классы Generics (При работе с большими проектами их использовать неоптимально,
@@ -65,7 +69,7 @@ class OrderViewSet(viewsets.ModelViewSet):
 
 
 # ---------------------------------------------------
-# Класс для использование с serializes.Serializers:
+# Класс для использования с serializes.Serializers:
 
 # class OrderAPIView(APIView):
 #     def get(self, request):
@@ -110,4 +114,3 @@ class OrderViewSet(viewsets.ModelViewSet):
 #             serializer.delete()
 #
 #         return Response({'order': 'order deleted ' + str(pk)})
-

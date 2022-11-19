@@ -15,8 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+
 from CarOrder.views import *
 from rest_framework import routers
+from .yasg import urlpatterns as doc_urls
 
 router = routers.DefaultRouter()
 router.register(r'order', OrderViewSet, basename='order')
@@ -24,6 +26,7 @@ router.register(r'order', OrderViewSet, basename='order')
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/', include(router.urls)),  # http://127.0.0.1:8000/api/v1/order/
+    path('api/v1/brands/', BrandAPIList.as_view()),
 
     # path('api/v1/orderlist/', OrderViewSet.as_view({'get': 'list'})),
     # path('api/v1/orderlist/<int:pk>', OrderViewSet.as_view({'put': 'update'}))
@@ -32,5 +35,7 @@ urlpatterns = [
     # path('api/v1/orderlist/', OrderAPIList.as_view()),
     # path('api/v1/orderlist/<int:pk>/', OrderAPIUpdate.as_view()),
     # path('api/v1/orderdetail/<int:pk>/', OrderAPIDetailView.as_view())
-#     URL для использования с классами представлений generics
+    #     URL для использования с классами представлений generics
 ]
+
+urlpatterns += doc_urls
