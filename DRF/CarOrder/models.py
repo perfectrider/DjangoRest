@@ -51,7 +51,6 @@ class Order(models.Model):
 
     order_date = models.DateField(blank=True, null=True, verbose_name='Дата заказа')
 
-    car_brand = models.ForeignObjectRel(CarModel, to='brands')
 
     car_model = models.ForeignKey(CarModel, on_delete=models.PROTECT,
                                   blank=False,
@@ -71,4 +70,4 @@ class Order(models.Model):
     class Meta:
         verbose_name = 'Заказ'
         verbose_name_plural = 'Заказы'
-        # ordering = ['-order_date']
+        ordering = ['-order_date']
