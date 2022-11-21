@@ -67,6 +67,10 @@ class Order(models.Model):
     def __str__(self):
         return f"{str(self.order_date)} - {self.car_model}, кол-во: {self.count}"
 
+    @property
+    def brand(self):
+        return self.car_model.brand_of_car.brand
+
     class Meta:
         verbose_name = 'Заказ'
         verbose_name_plural = 'Заказы'

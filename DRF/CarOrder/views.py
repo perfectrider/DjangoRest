@@ -39,15 +39,16 @@ class OrderViewSet(viewsets.ModelViewSet):
     # Если detail=True, то будет возвращаться не список записей, а одна
 
     def all_colors(self, request):
-        # !ВЫВОД заказов по цветам. (атрибуты: цвет, количество)
+        # Вывод всех цветов
         colors = CarColor.objects.all()
         return Response({'Colors': [c.color for c in colors]})
 
     @action(methods=['get'], detail=False)
     def all_brands(self, request):
-        # !ВЫВОД заказов по брендам. (атрибуты: бренд, количество)
+        # Вывод всех брендов
         brands = CarBrand.objects.all()
         return Response({'Brands': [c.brand for c in brands]})
+
 
 # ----------------------------------------------------
 #  Классы Generics (При работе с большими проектами их использовать неоптимально,

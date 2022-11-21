@@ -19,8 +19,7 @@ class BrandSerializer(serializers.Serializer):
 class OrderSerializer(serializers.ModelSerializer):
     order_date = serializers.DateField(default=date.today, label='Дата заказа')
 
-    # brand ???
-    #   Как реализовать вывод и поля "brand" модели "CarBrand" через модель "CarModel"
+    brand = serializers.PrimaryKeyRelatedField(queryset=CarBrand.objects)
 
     car_model = serializers.SlugRelatedField(slug_field='model_of_car',
                                              queryset=CarModel.objects,
@@ -32,7 +31,7 @@ class OrderSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Order
-        fields = ['order_date', 'car_model', 'car_color', 'count']
+        fields = ['order_date', 'brand', 'car_model', 'car_color', 'count']
 
 # --------------------------------------------------------------------------------------
 
