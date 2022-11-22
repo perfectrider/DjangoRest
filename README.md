@@ -18,6 +18,10 @@ source djangoenv/bin/activate
 
 pip install -r DRF/requirements.txt
 
+4. Apply all migrations:
+
+python3 DRF/manage.py migrate
+
 5. To run the local server and test the project, you need run command:
 
 python3 DRF/manage.py runserver
